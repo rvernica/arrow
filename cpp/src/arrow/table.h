@@ -222,7 +222,7 @@ class ARROW_EXPORT Table {
 /// \brief Compute a sequence of record batches from a (possibly chunked) Table
 class ARROW_EXPORT TableBatchReader : public RecordBatchReader {
  public:
-  ~TableBatchReader();
+  ~TableBatchReader() override;
 
   /// \brief Read batches with the maximum possible size
   explicit TableBatchReader(const Table& table);
@@ -243,18 +243,6 @@ class ARROW_EXPORT TableBatchReader : public RecordBatchReader {
 ARROW_EXPORT
 Status ConcatenateTables(const std::vector<std::shared_ptr<Table>>& tables,
                          std::shared_ptr<Table>* table);
-
-#ifndef ARROW_NO_DEPRECATED_API
-
-/// \brief Construct table from multiple input tables.
-/// \return Status, fails if any schemas are different
-/// \note Deprecated since 0.8.0
-ARROW_EXPORT
-Status MakeTable(const std::shared_ptr<Schema>& schema,
-                 const std::vector<std::shared_ptr<Array>>& arrays,
-                 std::shared_ptr<Table>* table);
-
-#endif
 
 }  // namespace arrow
 

@@ -1,4 +1,5 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,16 +17,10 @@
 # specific language governing permissions and limitations
 # under the License.
 
-wget https://github.com/jemalloc/jemalloc/archive/17c897976c60b0e6e4f4a365c751027244dada7a.tar.gz -O jemalloc.tar.gz
-tar xf jemalloc.tar.gz
-mv jemalloc-* jemalloc
-pushd /jemalloc
-./autogen.sh
-./configure "--with-jemalloc-prefix=je_arrow_" "--with-private-namespace=je_arrow_private_"
-# Skip doc generation
-touch doc/jemalloc.html
-touch doc/jemalloc.3
-make -j5
-make install
-popd
-rm -rf jemalloc.tar.gz jemalloc
+sudo apt-get install -y -q \
+    gdb ccache libboost-dev libboost-filesystem-dev \
+    libboost-system-dev libjemalloc-dev
+
+if [ "$ARROW_TRAVIS_VALGRIND" == "1" ]; then
+    sudo apt-get install -y -q valgrind
+fi

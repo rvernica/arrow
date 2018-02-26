@@ -359,9 +359,8 @@ class ArrayEqualsVisitor : public RangeEqualsVisitor {
       const uint8_t* right_data = right.values()->data();
 
       for (int64_t i = 0; i < left.length(); ++i) {
-        if (left.IsValid(i) &&
-            BitUtil::GetBit(left_data, i + left.offset()) !=
-                BitUtil::GetBit(right_data, i + right.offset())) {
+        if (left.IsValid(i) && BitUtil::GetBit(left_data, i + left.offset()) !=
+                                   BitUtil::GetBit(right_data, i + right.offset())) {
           result_ = false;
           return Status::OK();
         }
@@ -782,32 +781,6 @@ bool TypeEquals(const DataType& left, const DataType& right) {
     are_equal = visitor.result();
   }
   return are_equal;
-}
-
-Status ArrayEquals(const Array& left, const Array& right, bool* are_equal) {
-  *are_equal = ArrayEquals(left, right);
-  return Status::OK();
-}
-
-Status TensorEquals(const Tensor& left, const Tensor& right, bool* are_equal) {
-  *are_equal = TensorEquals(left, right);
-  return Status::OK();
-}
-
-Status ArrayApproxEquals(const Array& left, const Array& right, bool* are_equal) {
-  *are_equal = ArrayApproxEquals(left, right);
-  return Status::OK();
-}
-
-Status ArrayRangeEquals(const Array& left, const Array& right, int64_t start_idx,
-                        int64_t end_idx, int64_t other_start_idx, bool* are_equal) {
-  *are_equal = ArrayRangeEquals(left, right, start_idx, end_idx, other_start_idx);
-  return Status::OK();
-}
-
-Status TypeEquals(const DataType& left, const DataType& right, bool* are_equal) {
-  *are_equal = TypeEquals(left, right);
-  return Status::OK();
 }
 
 }  // namespace arrow
